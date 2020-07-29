@@ -9,17 +9,40 @@ import timber.log.Timber
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    lateinit var  name:string
+
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        timber.i("onSaveInstanceState called")
+        outState.putString("name",name)
+
+
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        name = savedInstanceState.getString("name").toString()
+    }
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.i("onCreate called")
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
+        name = "unknown"
+        binding.button.setOnClickListener(view: view? ->
+               name = binding.editTextTextPersonName.text.toString()
     }
+
+      Timber.i("name="+name)
 
     override fun onStart() {
         super.onStart()
         Timber.i("onStart called")
+        Timber.i("name="+name)
     }
 
     override fun onRestart() {
