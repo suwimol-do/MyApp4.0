@@ -2,20 +2,26 @@ package com.example.myapp40
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.example.myapp40.databinding.ActivityMainBinding
 import timber.log.Timber
 
+
+
+const val KEY_NAME ="name"
+
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    lateinit var  name:string
+    lateinit var name: String
 
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        timber.i("onSaveInstanceState called")
-        outState.putString("name",name)
+        Timber.i("onSaveInstanceState called")
+        outState.putString(KEY_NAME, name)
 
 
     }
@@ -26,43 +32,47 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.i("onCreate called")
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         name = "unknown"
-        binding.button.setOnClickListener(view: view? ->
-               name = binding.editTextTextPersonName.text.toString()
-    }
+        binding.button.setOnClickListener { view: View? ->
+            name = binding.editTextTextPersonName.text.toString()
+            binding.textView.text = name
+        }
 
-      Timber.i("name="+name)
+        Timber.i("name=" + name)
 
-    override fun onStart() {
-        super.onStart()
-        Timber.i("onStart called")
-        Timber.i("name="+name)
-    }
+        if (savedInstanceState != null) {
+            name = savedInstanceState.getString(KEY_NAME).toString()
 
-    override fun onRestart() {
-        super.onRestart()
-        Timber.i("onRestart called")
+        }
+        binding.textView.text = name
 
-    }
+        override fun onResume() {
+            super.onResume()
+            Timber.i("onResume Called")
+        }
 
-    override fun onPause() {
-        super.onPause()
-        Timber.i("onPause called")
-    }
+        override fun onPause() {
+            super.onPause()
+            Timber.i("onPause Called")
+        }
 
-    override fun onStop() {
-        super.onStop()
-        Timber.i("onStop called")
-    }
+        override fun onStop() {
+            super.onStop()
+            Timber.i("onStop Called")
+        }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Timber.i("onDestroy called")
+        override fun onDestroy() {
+            super.onDestroy()
+            Timber.i("onDestroy Called")
+        }
+
+        override fun onRestart() {
+            super.onRestart()
+            Timber.i("onRestart Called")
+        }
     }
 }
